@@ -1,15 +1,15 @@
 #![allow(non_snake_case)]
 
 macro_rules! example {
-
+    //actually I need to be able to mix and match these so I am matching wrong
     (enum $enumer:ident { $($i:ident => $e:expr $(, $m:ident)+;)* } ) => {
         pub enum $enumer {
         $(
-            $i (
+            $i ((
                 $(
                     $m,
                 )*
-            ),
+            )),
         )*
         }
         
@@ -19,7 +19,7 @@ macro_rules! example {
                 match self {
                     $(
                     
-                        $i => $e,
+                        &$enumer::$i(_) => $e,
 
                     )*
                 }
@@ -39,7 +39,7 @@ macro_rules! example {
                 match self {
                     $(
                     
-                        $i => $e,
+                        &$enumer::$i => $e,
 
                     )*
                 }
@@ -65,7 +65,13 @@ fn stringify_foo() {
 }
 
 #[test]
-fn stringify_baz() {
-    let x = Baz::First(3, "wew".into());
+fn stringify_baz_first() {
+    let x = Baz::First((3, "wew".into()));
     assert_eq!(x.as_str(), "kek");
+}
+
+#[test]
+fn stringify_baz_second() {
+    let x = Baz::Second((2, 3));
+    assert_eq!(x.as_str(), "wow");
 }
