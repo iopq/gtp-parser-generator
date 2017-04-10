@@ -1,45 +1,22 @@
-#![allow(non_snake_case)]
+macro_rules! first {
+    ( $a:tt $(, $rest:tt)* ) => ( $a )
+}
 
 macro_rules! example {
-    //actually I need to be able to mix and match these so I am matching wrong
-    (enum $enumer:ident { $($i:ident => $e:expr $(, $m:ident)+;)* } ) => {
-        pub enum $enumer {
-        $(
-            $i ((
-                $(
-                    $m,
-                )*
-            )),
-        )*
-        }
-        
-        
-        impl $enumer {
-            fn as_str(&self) -> &str {
-                match self {
-                    $(
-                    
-                        &$enumer::$i(_) => $e,
 
-                    )*
-                }
-            }
-        }
-    };
-    (enum $enumer:ident { $($i:ident => $e:expr ;)* } ) => {
+    (enum $enumer:ident { $($i:ident => $e:tt $( ( $($m:ident),* ) )* ; )* } ) => {
         pub enum $enumer {
         $(
-            $i,
+            $i $( ( ( $($m),* ) ) )*,
         )*
         }
         
         
         impl $enumer {
-            fn as_str(&self) -> &str {
-                match self {
+            pub fn as_str(&self) -> &str {
+                match *self {
                     $(
-                    
-                        &$enumer::$i => $e,
+                        $enumer :: $i $( ( first!(_ $(, $m)* ) ) )* => $e,
 
                     )*
                 }
@@ -51,11 +28,16 @@ macro_rules! example {
 example!(enum Foo { One => "two"; });
 
 example!(enum Bar {
-    Foo => "bar", String, String;
+    Foo => "bar" (String, String);
 });
 example!(enum Baz {
-   First => "kek", i32, String;
-   Second => "wow", i32, i32;
+   First => "kek" (i32, String);
+   Second => "wow" (i32, i32);
+});
+
+example!(enum Quux {
+    Long => "long" (String);
+    Short => "short";
 });
 
 #[test]
@@ -74,4 +56,10 @@ fn stringify_baz_first() {
 fn stringify_baz_second() {
     let x = Baz::Second((2, 3));
     assert_eq!(x.as_str(), "wow");
+}
+
+#[test]
+fn stringify_quux() {
+    let x = Quux::Short;
+    assert_eq!(x.as_str(), "short");
 }
