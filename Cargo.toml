@@ -1,0 +1,6 @@
+[package]
+name = "gtp-parser-generator"
+version = "0.1.0"
+authors = ["Igor Polyakov <iopguy@gmail.com>"]
+
+[dependencies]
