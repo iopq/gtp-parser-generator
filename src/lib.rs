@@ -6,7 +6,7 @@ macro_rules! replace_expr {
     ($_t:tt $sub:expr) => {$sub};
 }
 
-macro_rules! example {
+macro_rules! commands {
 
     (enum $enumer:ident { $($i:ident => $e:tt $( ( $($m:ident),* ) )* ; )* } ) => {
         pub enum $enumer {
@@ -49,18 +49,18 @@ pub struct ParseError {
 
 }
 
-example!(enum Foo { One => "two"; });
+commands!(enum Foo { One => "two"; });
 
-example!(enum Bar {
+commands!(enum Bar {
     Foo => "bar" (String, String);
 });
 
-example!(enum Baz {
+commands!(enum Baz {
    First => "kek" (i32, String);
    Second => "wow" (i32, i32);
 });
 
-example!(enum Quux {
+commands!(enum Quux {
     Long => "long" (String);
     Short => "short";
 });
