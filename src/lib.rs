@@ -41,10 +41,10 @@ macro_rules! commands {
                     _ => Err(ParseError{})
                 }
             }
-			
-			pub fn list_commands() -> String {
-				[$($e),*].join("\n")
-			}
+            
+            pub fn list_commands() -> String {
+                [$($e),*].join("\n")
+            }
         }
     };
 }
@@ -114,12 +114,12 @@ fn baz_from_command() {
 
 #[test]
 fn foo_list_commands() {
-	let x = Foo::list_commands();
-	assert_eq!(x, "two".to_string());
+    let x = Foo::list_commands();
+    assert_eq!(x, "two".to_string());
 }
 
 #[test]
 fn quux_list_commands() {
-	let x = Quux::list_commands();
-	assert_eq!(x, "long\nshort");
+    let x = Quux::list_commands();
+    assert_eq!(x, "long\nshort");
 }
