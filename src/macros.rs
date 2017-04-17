@@ -37,7 +37,7 @@ macro_rules! commands {
                     $(
                         //$e and $i level
                         $e => Ok($enumer::$i $(  ( { let mut iter = parsed.args.into_iter(); (
-                            $( replace_expr!($m iter.next().unwrap().parse().chain_err(|| "cannot parse string")?), )*
+                            $( replace_expr!($m iter.next().unwrap().parse().chain_err(|| "cannot parse argument")?), )*
                         )   } ) )* ),
                         
                     )*
