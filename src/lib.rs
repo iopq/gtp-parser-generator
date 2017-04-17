@@ -41,6 +41,10 @@ macro_rules! commands {
                     _ => Err(ParseError{})
                 }
             }
+			
+			pub fn list_commands() -> String {
+				[$($e),*].join("\n")
+			}
         }
     };
 }
@@ -106,4 +110,16 @@ fn foo_from_command() {
 fn baz_from_command() {
     let x = Baz::from_parsed_command(Command{ name: "kek", args: vec!["1", "two"] });
     assert_eq!(x.unwrap(), Baz::First((1, "two".to_string())));
+}
+
+#[test]
+fn foo_list_commands() {
+	let x = Foo::list_commands();
+	assert_eq!(x, "two".to_string());
+}
+
+#[test]
+fn quux_list_commands() {
+	let x = Quux::list_commands();
+	assert_eq!(x, "long\nshort");
 }
