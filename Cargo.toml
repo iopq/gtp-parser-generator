@@ -5,3 +5,4 @@ authors = ["Igor Polyakov <iopguy@gmail.com>"]
 
 [dependencies]
 pom = "1.0.1"
+error-chain = "0.10.0"

@@ -1,3 +1,6 @@
+#[cfg(test)]
+use errors::*;
+
 macro_rules! first {
     ( $a:tt $(, $rest:tt)* ) => ( $a )
 }
@@ -29,7 +32,7 @@ macro_rules! commands {
                 }
             }
             
-            pub fn from_parsed_command(parsed: $crate::Command) -> Result<Self, $crate::ParseError> {
+            pub fn from_parsed_command(parsed: $crate::Command) -> Result<Self> {
                 match parsed.name.as_str() {
                     $(
                         //$e and $i level
@@ -38,7 +41,7 @@ macro_rules! commands {
                         )   } ) )* ),
                         
                     )*
-                    _ => Err($crate::ParseError{})
+                    _ => Err(ErrorKind::NoCommand.into())
                 }
             }
             
