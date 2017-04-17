@@ -8,7 +8,12 @@ macro_rules! replace_expr {
 
 macro_rules! commands {
 
-    (enum $enumer:ident { $($i:ident => $e:tt $( ( $($m:ident),* ) )* ; )* } ) => {
+    ( $(#[$attr:meta])* enum $enumer:ident { $($i:ident => $e:tt $( ( $($m:ident),* ) )* ; )* } ) => {
+        $(
+             #[$attr]
+        )*
+        #[derive(Clone, PartialEq, Hash, Debug)]
+        
         pub enum $enumer {
         $(
             $i $( ( ( $($m),*, ) ) )*,
@@ -45,6 +50,7 @@ pub struct Command<'a> {
     args: Vec<&'a str>
 }
 
+#[derive(Debug)]
 pub struct ParseError {
 
 }
@@ -87,4 +93,17 @@ fn stringify_baz_second() {
 fn stringify_quux() {
     let x = Quux::Short;
     assert_eq!(x.as_str(), "short");
+}
+
+#[test]
+fn foo_from_command() {
+    let x = Foo::from_parsed_command(Command{ name: "two", args: Vec::new() });
+    assert_eq!(x.unwrap(), Foo::One);
+}
+
+
+#[test]
+fn baz_from_command() {
+    let x = Baz::from_parsed_command(Command{ name: "kek", args: vec!["1", "two"] });
+    assert_eq!(x.unwrap(), Baz::First((1, "two".to_string())));
 }
