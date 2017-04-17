@@ -17,7 +17,7 @@ fn word() -> Parser<u8, String> {
 fn non_control_non_space_non_comment(term: u8) -> bool {
     term > 32 && term < 127 && term != b'#'
     //space is 32, lower is control characters
-	//127 is a control character, 128 and above are UTF-8 things
+    //127 is a control character, 128 and above are UTF-8 things
 }
 
 fn utf8(v: Vec<u8>) -> String {

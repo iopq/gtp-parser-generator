@@ -17,6 +17,7 @@ mod errors {
 
     errors {
         NoCommand {}
+        NotEnoughArguments {}
     }
 
     }
@@ -30,13 +31,6 @@ pub struct Command {
     name: String,
     args: Vec<String>
 }
-
-#[derive(Debug, PartialEq)]
-pub struct ParseError {
-
-}
-
-commands!(enum Gtp { Quit => "quit"; });
 
 pub fn try_parse(input: &[u8]) -> Result<Command> {
     let input = DataInput::new(input);

@@ -37,7 +37,7 @@ macro_rules! commands {
                     $(
                         //$e and $i level
                         $e => Ok($enumer::$i $(  ( { let mut iter = parsed.args.into_iter(); (
-                            $( replace_expr!($m iter.next().unwrap().parse().chain_err(|| "cannot parse argument")?), )*
+                            $( replace_expr!($m iter.next().ok_or::<Error>(ErrorKind::NotEnoughArguments.into())?.parse().chain_err(|| "cannot parse argument")?), )*
                         )   } ) )* ),
                         
                     )*
@@ -130,6 +130,12 @@ fn baz_from_command_fail() {
 fn quux_from_command() {
     let x = Quux::from_parsed_command(::Command{ name: "short".to_string(), args: Vec::new() });
     assert_eq!(x.unwrap(), Quux::Short);
+}
+
+#[test]
+fn quux_from_command_fail() {
+    let x = Quux::from_parsed_command(::Command{ name: "long".to_string(), args: Vec::new() });
+    assert!(x.is_err());
 }
 
 #[test]
