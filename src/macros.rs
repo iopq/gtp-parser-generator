@@ -37,7 +37,7 @@ macro_rules! commands {
                     $(
                         //$e and $i level
                         $e => Ok($enumer::$i $(  ( { let mut iter = parsed.args.into_iter(); (
-                            $( replace_expr!($m iter.next().unwrap().parse().unwrap()), )*
+                            $( replace_expr!($m iter.next().unwrap().parse().chain_err(|| "cannot parse string")?), )*
                         )   } ) )* ),
                         
                     )*
@@ -118,6 +118,12 @@ fn bar_from_command() {
 fn baz_from_command() {
     let x = Baz::from_parsed_command(::Command{ name: "kek".to_string(), args: vec!["1".to_string(), "two".to_string()] });
     assert_eq!(x.unwrap(), Baz::First((1, "two".to_string())));
+}
+
+#[test]
+fn baz_from_command_fail() {
+    let x = Baz::from_parsed_command(::Command{ name: "kek".to_string(), args: vec!["one".to_string(), "two".to_string()] });
+    assert!(x.is_err());
 }
 
 #[test]
