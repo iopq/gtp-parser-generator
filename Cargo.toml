@@ -4,3 +4,4 @@ version = "0.1.0"
 authors = ["Igor Polyakov <iopguy@gmail.com>"]
 
 [dependencies]
+pom = "1.0.1"
