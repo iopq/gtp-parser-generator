@@ -36,10 +36,17 @@ pub struct Command {
 pub fn try_parse(input: &[u8]) -> Result<Command> {
     let input = DataInput::new(input);
     let parse = lexer::command().parse(&mut input.clone());
-    let (id, mut parse) = parse.unwrap();
+    let (id, mut parse) = parse.chain_err(|| "cannot parse argument")?;
+    
+    let rest;
 
-    let rest = parse.split_off(1);
-    let ref first = parse[0];
+    if parse.len() > 0 {
+        rest = parse.split_off(1);
+    } else {
+        rest = Vec::new();
+    }
+    
+    let first = parse.get(0).ok_or::<Error>(ErrorKind::NoCommand.into())?;
     Ok(Command { name: first.clone(), id: id, args: rest })
 }
 
@@ -47,4 +54,11 @@ pub fn try_parse(input: &[u8]) -> Result<Command> {
 fn parse_quit() {
     let quit = try_parse(b"quit");
     assert_eq!(quit.unwrap(), Command{ name: "quit".to_string(), id: None, args: Vec::new() });
+}
+
+#[test]
+#[should_panic]
+fn parse_fail() {
+    let fail = try_parse(b" ");
+    fail.unwrap();
 }
