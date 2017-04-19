@@ -2,6 +2,8 @@
 name = "gtp-parser-generator"
 version = "0.1.0"
 authors = ["Igor Polyakov <iopguy@gmail.com>"]
+repository = "https://github.com/iopq/gtp-parser-generator"
+license = "MIT/Apache-2.0"
 
 [dependencies]
 pom = "1.0.1"

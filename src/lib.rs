@@ -29,7 +29,7 @@ use errors::*;
 #[derive(Debug, PartialEq)]
 pub struct Command {
     name: String,
-	id: Option<u8>,
+    id: Option<u8>,
     args: Vec<String>,
 }
 

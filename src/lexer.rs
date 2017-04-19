@@ -28,7 +28,7 @@ fn utf8(v: Vec<u8>) -> String {
 
 pub fn command() -> Parser<u8, (Option<u8>, Vec<String>)> {
     let integer = one_of(b"123456789") - one_of(b"0123456789").repeat(0..) | sym(b'0');
-	let number = integer.collect().convert(String::from_utf8).convert(|s|u8::from_str(&s));
+    let number = integer.collect().convert(String::from_utf8).convert(|s|u8::from_str(&s));
     number.opt() + (space() * word()).repeat(0..) - comment().opt()
 }
 
@@ -41,8 +41,8 @@ fn command_comment() {
 
 #[test]
 fn command_id() {
-	let input = ::pom::DataInput::new(b"12 quit");
+    let input = ::pom::DataInput::new(b"12 quit");
     let output = command().parse(&mut input.clone());
-	
-	assert_eq!(output, Ok((Some(12), vec!["quit".to_string()])));
+    
+    assert_eq!(output, Ok((Some(12), vec!["quit".to_string()])));
 }
