@@ -104,37 +104,37 @@ fn stringify_quux() {
 
 #[test]
 fn foo_from_command() {
-    let x = Foo::from_parsed_command(::Command{ name: "two".to_string(), args: Vec::new() });
+    let x = Foo::from_parsed_command(::Command{ name: "two".to_string(), id: None, args: Vec::new() });
     assert_eq!(x.unwrap(), Foo::One);
 }
 
 #[test]
 fn bar_from_command() {
-    let x = Bar::from_parsed_command(::Command{ name: "bar".to_string(), args: vec!["1".to_string(), "two".to_string()] });
+    let x = Bar::from_parsed_command(::Command{ name: "bar".to_string(), id: None, args: vec!["1".to_string(), "two".to_string()] });
     assert_eq!(x.unwrap(), Bar::Foo(("1".to_string(), "two".to_string())));
 }
 
 #[test]
 fn baz_from_command() {
-    let x = Baz::from_parsed_command(::Command{ name: "kek".to_string(), args: vec!["1".to_string(), "two".to_string()] });
+    let x = Baz::from_parsed_command(::Command{ name: "kek".to_string(), id: None, args: vec!["1".to_string(), "two".to_string()] });
     assert_eq!(x.unwrap(), Baz::First((1, "two".to_string())));
 }
 
 #[test]
 fn baz_from_command_fail() {
-    let x = Baz::from_parsed_command(::Command{ name: "kek".to_string(), args: vec!["one".to_string(), "two".to_string()] });
+    let x = Baz::from_parsed_command(::Command{ name: "kek".to_string(), id: None, args: vec!["one".to_string(), "two".to_string()] });
     assert!(x.is_err());
 }
 
 #[test]
 fn quux_from_command() {
-    let x = Quux::from_parsed_command(::Command{ name: "short".to_string(), args: Vec::new() });
+    let x = Quux::from_parsed_command(::Command{ name: "short".to_string(), id: None, args: Vec::new() });
     assert_eq!(x.unwrap(), Quux::Short);
 }
 
 #[test]
 fn quux_from_command_fail() {
-    let x = Quux::from_parsed_command(::Command{ name: "long".to_string(), args: Vec::new() });
+    let x = Quux::from_parsed_command(::Command{ name: "long".to_string(), id: None, args: Vec::new() });
     assert!(x.is_err());
 }
 
